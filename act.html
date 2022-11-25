@@ -1,0 +1,115 @@
+<html>
+    <head>
+        <title>
+            act
+        </title>
+        <style>
+            #container{
+                width: 900px;
+                height: 900px;
+                background: black;
+                position: relative;
+                margin: auto;
+            }
+            #field{
+                width: 900px;
+                height: 900px;
+                background: gray;
+                position: relative;
+                margin: auto;
+                transform: perspective(600px) rotateX(45deg) scale(0.75, 0.75);
+            }
+            #a_in{
+                margin-left: 0px;
+                margin-top: 0px;
+                width: 100px;
+                height: 100px;
+                background-color: black;
+                border-radius: 50%;
+                position: absolute;
+            }
+            #b_in{
+                margin-left: 800px;
+                margin-top: 800px;
+                width: 100px;
+                height: 100px;
+                background-color: black;
+                border-radius: 50%;
+                position: absolute;
+            }
+            #a_out{
+                margin-left: 0px;
+                margin-top: 0px;
+                width: 100px;
+                height: 100px;
+                background-color: red;
+                border-radius: 50%;
+                position: absolute;
+                z-index: 1;
+            }
+            #b_out{
+                margin-left: 800px;
+                margin-top: 800px;
+                width: 100px;
+                height: 100px;
+                background-color: blue;
+                border-radius: 50%;
+                position: absolute;
+                z-index: 1;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <div id="a_out"></div>
+            <div id="b_out"></div>    
+            <div id="field">
+                <div id="a_in"></div>
+                <div id="b_in"></div>
+            </div>
+        </div>
+    </body>
+    <script>
+        //settings engine
+        //setMode("elleptic")
+        //setA_x(1)
+        //setA_e(0) 
+        //start()
+
+        //running engine
+        let start = 0;
+        function start() {
+            start = 1;
+        }
+        while (start == 1) {
+
+        }
+        //data engine
+        var a = {
+            r: 0,
+            g: 0,
+            b: 0,
+            x: 0,
+            y: 0,
+        }
+        var b = {
+            r: 0,
+            g: 0,
+            b: 0,
+            x: 800,
+            y: 800,
+        }
+        var field = [[],[],[],[],[],[],[],[],[]]
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                field[i][j] = 0
+            }    
+        }
+        console.log(field)
+
+        //connection between css and js
+        let element = document.getElementById("b_out")
+        if (b.x == "800") element.style.transform = "scale(2.0, 2.0)"
+        
+    </script>
+</html>
