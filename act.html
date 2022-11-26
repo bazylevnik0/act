@@ -5,6 +5,8 @@
         </title>
         <style>
             #container{
+                margin-left: 0px;
+                margin-top: 0px;
                 width: 900px;
                 height: 900px;
                 background: black;
@@ -12,6 +14,8 @@
                 margin: auto;
             }
             #field{
+                margin-left: 0px;
+                margin-top: 0px;
                 width: 900px;
                 height: 900px;
                 background: gray;
@@ -28,15 +32,6 @@
                 border-radius: 50%;
                 position: absolute;
             }
-            #b_in{
-                margin-left: 800px;
-                margin-top: 800px;
-                width: 100px;
-                height: 100px;
-                background-color: black;
-                border-radius: 50%;
-                position: absolute;
-            }
             #a_out{
                 margin-left: 0px;
                 margin-top: 0px;
@@ -47,15 +42,27 @@
                 position: absolute;
                 z-index: 1;
             }
+            #b_in{
+                margin-left: 0px;
+                margin-top: 0px;
+                width: 100px;
+                height: 100px;
+                background-color: black;
+                border-radius: 50%;
+                position: absolute;
+            }
             #b_out{
-                margin-left: 800px;
-                margin-top: 800px;
+                margin-left: 0px;
+                margin-top: 0px;
                 width: 100px;
                 height: 100px;
                 background-color: blue;
                 border-radius: 50%;
                 position: absolute;
                 z-index: 1;
+            }
+            #container{
+                background: no-repeat url("bg.jpg");
             }
         </style>
     </head>
@@ -70,34 +77,22 @@
         </div>
     </body>
     <script>
-        //settings engine
-        //setMode("elleptic")
-        //setA_x(1)
-        //setA_e(0) 
-        //start()
-
-        //running engine
-        let start = 0;
-        function start() {
-            start = 1;
-        }
-        while (start == 1) {
-
-        }
-        //data engine
+        //data
         var a = {
             r: 0,
             g: 0,
             b: 0,
             x: 0,
             y: 0,
+            direction: [0,0],
         }
         var b = {
             r: 0,
             g: 0,
             b: 0,
-            x: 800,
-            y: 800,
+            x: 0,
+            y: 0,
+            direction: [0,0],
         }
         var field = [[],[],[],[],[],[],[],[],[]]
         for (let i = 0; i < 9; i++) {
@@ -105,11 +100,54 @@
                 field[i][j] = 0
             }    
         }
+     
+        //settings
+        function set_el (el,r,g,b,x,y,direction) {
+            el.r = r
+            el.g = g
+            el.b = b
+            el.x = x
+            el.y = y
+            el.direction = direction
+        }
+        //setMode("ellastic")
+        //setA_x(1)
+        //setA_e(0) 
+        //start()
+
+        //running
+        let process = 0;
+        async function start() {
+            //get elements
+            var a_in  = document.getElementById("a_in")
+            var a_out = document.getElementById("a_out")
+            var b_in  = document.getElementById("b_in")
+            var b_out = document.getElementById("b_out")
+            //run
+            process = 1;
+            while (process == 1) {
+                await sleep(50);
+                console.log("test")
+                 //check & change connection between css and js
+                 a_in .style.marginLeft = "" + a.x + "px"
+                 a_in .style.marginTop  = "" + a.y + "px"
+                 a_out.style.marginLeft = "" + a.x + "px"
+                 a_out.style.marginTop  = "" + a.y + "px"
+                 b_in .style.marginLeft = "" + b.x + "px"
+                 b_in .style.marginTop  = "" + b.y + "px"
+                 b_out.style.marginLeft = "" + b.x + "px"
+                 b_out.style.marginTop  = "" + b.y + "px"
+                 //scale = 1.0 when y = 0 and scale = 2.0 when y = 800
+                 a_out.style.transform = "scale(" + (1.2+(a.y/1000)) +","+(1.2+(a.y/1000))+")"
+                 b_out.style.transform = "scale(" +(1.2+(b.y/1000)) + "," +(1.2+(b.y/1000)) + ")"
+            }
+        }
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms)); 
+        }
+
+        console.log("BG Image by Petra id1913661 from Pixabay")
         console.log(field)
 
-        //connection between css and js
-        let element = document.getElementById("b_out")
-        if (b.x == "800") element.style.transform = "scale(2.0, 2.0)"
-        
     </script>
 </html>
