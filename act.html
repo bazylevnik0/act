@@ -100,21 +100,22 @@
                 field[i][j] = 0
             }    
         }
-     
+        var mode = "None"
+        
         //settings
-        function set_el (el,r,g,b,x,y,direction) {
+        function set_el(el,r,g,b,x,y,direction) {
             el.r = r
             el.g = g
             el.b = b
             el.x = x
             el.y = y
             el.direction = direction
+            console.log(field)
         }
-        //setMode("ellastic")
-        //setA_x(1)
-        //setA_e(0) 
-        //start()
-
+        function set_mode(type) {
+            mode = type    
+        }
+        var collision = 0;
         //running
         let process = 0;
         async function start() {
@@ -126,20 +127,35 @@
             //run
             process = 1;
             while (process == 1) {
+                for (let i = 0; i < 9; i++) {
+                    for (let j = 0; j < 9; j++) {
+                             if ((Math.floor(a.x/100)==j)&&(Math.floor(a.y/100)==i)) { 
+                            field[i][j] = "A"
+                        } 
+                        else if ((Math.floor(b.x/100)==j)&&(Math.floor(b.y/100)==i)) { 
+                            field[i][j] = "B"
+                        }
+                        else field[i][j] = 0
+                        if ( ((Math.floor(a.x/100)==j)&&(Math.floor(a.y/100)==i)) && 
+                             ((Math.floor(b.x/100)==j)&&(Math.floor(b.y/100)==i)) ) {
+                            field[i][j] = "AB"
+                            collision = 1;
+                        }
+                    }    
+                }       
                 await sleep(50);
-                console.log("test")
-                 //check & change connection between css and js
-                 a_in .style.marginLeft = "" + a.x + "px"
-                 a_in .style.marginTop  = "" + a.y + "px"
-                 a_out.style.marginLeft = "" + a.x + "px"
-                 a_out.style.marginTop  = "" + a.y + "px"
-                 b_in .style.marginLeft = "" + b.x + "px"
-                 b_in .style.marginTop  = "" + b.y + "px"
-                 b_out.style.marginLeft = "" + b.x + "px"
-                 b_out.style.marginTop  = "" + b.y + "px"
-                 //scale = 1.0 when y = 0 and scale = 2.0 when y = 800
-                 a_out.style.transform = "scale(" + (1.2+(a.y/1000)) +","+(1.2+(a.y/1000))+")"
-                 b_out.style.transform = "scale(" +(1.2+(b.y/1000)) + "," +(1.2+(b.y/1000)) + ")"
+                //check & change connection between css and js
+                a_in .style.marginLeft = "" + a.x + "px"
+                a_in .style.marginTop  = "" + a.y + "px"
+                a_out.style.marginLeft = "" + a.x + "px"
+                a_out.style.marginTop  = "" + a.y + "px"
+                b_in .style.marginLeft = "" + b.x + "px"
+                b_in .style.marginTop  = "" + b.y + "px"
+                b_out.style.marginLeft = "" + b.x + "px"
+                b_out.style.marginTop  = "" + b.y + "px"
+                //scale = 1.0 when y = 0 and scale = 2.0 when y = 800
+                a_out.style.transform = "scale(" + (1.2+(a.y/1000)) +","+(1.2+(a.y/1000))+")"
+                b_out.style.transform = "scale(" +(1.2+(b.y/1000)) + "," +(1.2+(b.y/1000)) + ")"
             }
         }
         function sleep(ms) {
