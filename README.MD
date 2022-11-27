@@ -1,4 +1,5 @@
 Simple engine for visualizating collisions<br>
+HTML/CSS objects under JS data storing/handling<br>
 In console:<br> 
 We can set start position, and speed/direction of elements(a,b)<br>
 We can set collision mode(non-ellastic, ellastic)<br>
