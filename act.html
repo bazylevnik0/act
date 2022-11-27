@@ -37,7 +37,7 @@
                 margin-top: 0px;
                 width: 100px;
                 height: 100px;
-                background-color: red;
+                background: linear-gradient(white, red);
                 border-radius: 50%;
                 position: absolute;
                 z-index: 1;
@@ -56,8 +56,8 @@
                 margin-top: 0px;
                 width: 100px;
                 height: 100px;
-                background-color: blue;
-                border-radius: 50%;
+                background: linear-gradient(white, blue);
+                 border-radius: 50%;
                 position: absolute;
                 z-index: 1;
             }
@@ -79,17 +79,11 @@
     <script>
         //data
         var a = {
-            r: 0,
-            g: 0,
-            b: 0,
             x: 0,
             y: 0,
             direction: [0,0],
         }
         var b = {
-            r: 0,
-            g: 0,
-            b: 0,
             x: 0,
             y: 0,
             direction: [0,0],
@@ -103,19 +97,16 @@
         var mode = "None"
         
         //settings
-        function set_el(el,r,g,b,x,y,direction) {
-            el.r = r
-            el.g = g
-            el.b = b
+        function set_el(el,x,y,direction) {
             el.x = x
             el.y = y
             el.direction = direction
-            console.log(field)
         }
         function set_mode(type) {
             mode = type    
         }
         var collision = 0;
+
         //running
         let process = 0;
         async function start() {
@@ -127,6 +118,13 @@
             //run
             process = 1;
             while (process == 1) {
+                //change x,y <- direction of el... and move
+                a.x += a.direction[0] 
+                a.y += a.direction[1]   
+                b.x += b.direction[0] 
+                b.y += b.direction[1]        
+
+                //check & change connection between x,y of el and field
                 for (let i = 0; i < 9; i++) {
                     for (let j = 0; j < 9; j++) {
                              if ((Math.floor(a.x/100)==j)&&(Math.floor(a.y/100)==i)) { 
@@ -139,11 +137,49 @@
                         if ( ((Math.floor(a.x/100)==j)&&(Math.floor(a.y/100)==i)) && 
                              ((Math.floor(b.x/100)==j)&&(Math.floor(b.y/100)==i)) ) {
                             field[i][j] = "AB"
-                            collision = 1;
+                            //activate collision
+                            if (collision == 0) {
+                                collision = 1
+                            }
                         }
                     }    
                 }       
-                await sleep(50);
+                //check collision & change direction
+                if (collision == 1){
+                    if (mode == "ellastic") {
+                        a.direction[0] *= -1
+                        b.direction[0] *= -1
+                        a.direction[1] *= -1
+                        b.direction[1] *= -1
+                        collision = 2
+                    }
+                    if (mode == "non-ellastic") {         
+                        if (a.direction[0] > b.direction[0]) {
+                                b.direction[0] *= -1
+                        } 
+                        if (a.direction[0] < b.direction[0]) {
+                                a.direction[0] *= -1
+                        } 
+                        if (a.direction[0] == b.direction[0]) {
+                                a.direction[0] = 0
+                                b.direction[0] = 0
+                        } 
+
+                        if (a.direction[1] > b.direction[1]) {
+                                b.direction[1] *= -1
+                        } 
+                        if (a.direction[1] < b.direction[1]) {
+                                a.direction[1] *= -1
+                        } 
+                        if (a.direction[1] == b.direction[1]) {
+                                a.direction[1] = 0
+                                b.direction[1] = 0
+                        }
+
+                        collision = 2
+                    }
+                }
+
                 //check & change connection between css and js
                 a_in .style.marginLeft = "" + a.x + "px"
                 a_in .style.marginTop  = "" + a.y + "px"
@@ -154,8 +190,10 @@
                 b_out.style.marginLeft = "" + b.x + "px"
                 b_out.style.marginTop  = "" + b.y + "px"
                 //scale = 1.0 when y = 0 and scale = 2.0 when y = 800
-                a_out.style.transform = "scale(" + (1.2+(a.y/1000)) +","+(1.2+(a.y/1000))+")"
-                b_out.style.transform = "scale(" +(1.2+(b.y/1000)) + "," +(1.2+(b.y/1000)) + ")"
+                a_out.style.transform = "scale(" + (1.2+(a.y/1000)) + "," + (1.2+(a.y/1000)) + ")"
+                b_out.style.transform = "scale(" + (1.2+(b.y/1000)) + "," + (1.2+(b.y/1000)) + ")"
+                //
+                await sleep(50);
             }
         }
         function sleep(ms) {
@@ -164,6 +202,5 @@
 
         console.log("BG Image by Petra id1913661 from Pixabay")
         console.log(field)
-
     </script>
 </html>
